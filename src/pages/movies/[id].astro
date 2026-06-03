@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ScreeningFilters from '../../components/ScreeningFilters.astro';
+import ScreeningList from '../../components/ScreeningList.astro';
+import { fetchMovieById, fetchScreenings } from '../../lib/api';
+
+const idParam = Astro.params.id;
+const id = Number(idParam);
+
+if (!idParam || isNaN(id)) {
+  return Astro.redirect('/');
+}
+
+const [movie, screenings] = await Promise.all([
+  fetchMovieById(id),
+  fetchScreenings(id),
+]);
+
+if (!movie) {
+  return Astro.redirect('/');
+}
+
+const title = `${movie.title} — Movie Finder`;
+const initial = movie.title.charAt(0).toUpperCase();
+---
+
+<BaseLayout title={title}>
+  <!-- Movie header -->
+  <section class="mb-8 flex flex-col gap-6 md:flex-row">
+    <div class="flex-shrink-0">
+      <div class="mx-auto h-64 w-44 overflow-hidden rounded-xl bg-gray-200 shadow-md md:h-80 md:w-56">
+        {movie.posterUrl ? (
+          <img
+            src={movie.posterUrl}
+            alt={movie.title}
+            class="h-full w-full object-cover"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          />
+          <div
+            class="hidden h-full w-full items-center justify-center text-6xl font-bold text-gray-400"
+            style="display:none"
+          >
+            {initial}
+          </div>
+        ) : (
+          <div class="flex h-full w-full items-center justify-center text-6xl font-bold text-gray-400">
+            {initial}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-center">
+      <h1 class="text-3xl font-bold text-gray-900 md:text-4xl">{movie.title}</h1>
+      {movie.year && (
+        <p class="mt-2 text-lg text-gray-500">{movie.year}</p>
+      )}
+      <a
+        href="/"
+        class="mt-4 inline-flex w-fit items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        Back to movies
+      </a>
+    </div>
+  </section>
+
+  <!-- Screenings -->
+  <section>
+    <h2 class="mb-4 text-2xl font-bold text-gray-900">Upcoming Screenings</h2>
+    {screenings.length > 0 && <ScreeningFilters screenings={screenings} />}
+    <div class="mt-4">
+      <ScreeningList screenings={screenings} />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../../scripts/screening-filters';
+</script>
