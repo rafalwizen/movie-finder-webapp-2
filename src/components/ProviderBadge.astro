@@ -1,0 +1,17 @@
+---
+import { PROVIDERS } from '../types';
+
+interface Props {
+  code: string;
+}
+
+const { code } = Astro.props;
+const provider = PROVIDERS[code] ?? {
+  name: code,
+  colorClass: 'bg-gray-100 text-gray-800',
+};
+---
+
+<span class={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${provider.colorClass}`}>
+  {provider.name}
+</span>

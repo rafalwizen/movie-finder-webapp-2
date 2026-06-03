@@ -1,0 +1,46 @@
+---
+import type { Movie } from '../types';
+
+interface Props {
+  movie: Movie;
+}
+
+const { movie } = Astro.props;
+const initial = movie.title.charAt(0).toUpperCase();
+---
+
+<a
+  href={`/movies/${movie.id}`}
+  class="group block overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg"
+>
+  <div class="aspect-[2/3] w-full overflow-hidden bg-gray-200">
+    {movie.posterUrl ? (
+      <img
+        src={movie.posterUrl}
+        alt={movie.title}
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      />
+      <div
+        class="hidden h-full w-full items-center justify-center bg-gray-200 text-5xl font-bold text-gray-400"
+        style="display:none"
+      >
+        {initial}
+      </div>
+    ) : (
+      <div class="flex h-full w-full items-center justify-center text-5xl font-bold text-gray-400">
+        {initial}
+      </div>
+    )}
+  </div>
+  <div class="p-4">
+    <h3 class="truncate text-sm font-semibold text-gray-900 group-hover:text-blue-600">
+      {movie.title}
+    </h3>
+    {movie.year && (
+      <p class="mt-1 text-xs text-gray-500">{movie.year}</p>
+    )}
+  </div>
+</a>

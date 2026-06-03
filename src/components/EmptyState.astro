@@ -1,0 +1,15 @@
+---
+interface Props {
+  message: string;
+}
+
+const { message } = Astro.props;
+---
+
+<div class="flex flex-col items-center justify-center py-16 text-gray-400">
+  <svg xmlns="http://www.w3.org/2000/svg" class="mb-4 h-16 w-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+  <p class="text-lg">{message}</p>
+</div>
