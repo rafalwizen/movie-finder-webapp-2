@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Find movies and cinema screenings near you' } = Astro.props;
+const { title, description = 'GdzieDoKina.pl — znajdź filmy i seanse kinowe w Twojej okolicy' } = Astro.props;
 ---
 
 <!doctype html>
@@ -32,7 +32,7 @@ const { title, description = 'Find movies and cinema screenings near you' } = As
             <line x1="17" y1="7" x2="22" y2="7" />
             <line x1="17" y1="17" x2="22" y2="17" />
           </svg>
-          Movie Finder
+          GdzieDoKina.pl
         </a>
       </nav>
     </header>
@@ -42,7 +42,7 @@ const { title, description = 'Find movies and cinema screenings near you' } = As
     </main>
 
     <footer class="mt-auto border-t border-gray-200 bg-white py-6 text-center text-sm text-gray-500">
-      <p>&copy; {new Date().getFullYear()} Movie Finder</p>
+      <p>&copy; {new Date().getFullYear()} GdzieDoKina.pl</p>
     </footer>
   </body>
 </html>

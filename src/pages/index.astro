@@ -15,10 +15,10 @@ try {
 }
 ---
 
-<BaseLayout title={query ? `${query} — Movie Finder` : 'Movie Finder'}>
+<BaseLayout title={query ? `${query} — GdzieDoKina.pl` : 'GdzieDoKina.pl'}>
   <section class="mb-8 text-center">
     <h1 class="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">
-      Find Movies & Screenings
+      Znajdź filmy i seanse
     </h1>
     <div class="mx-auto flex justify-center">
       <SearchBar initialQuery={query} />
@@ -28,8 +28,8 @@ try {
   <section>
     {error ? (
       <div class="rounded-lg border border-red-200 bg-red-50 p-6 text-center text-red-700">
-        <p class="text-lg font-semibold">Could not load movies</p>
-        <p class="mt-1 text-sm">Please make sure the API server is running and try again.</p>
+        <p class="text-lg font-semibold">Nie udało się załadować filmów</p>
+        <p class="mt-1 text-sm">Upewnij się, że serwer API działa i spróbuj ponownie.</p>
       </div>
     ) : (
       <MovieGrid movies={movies} />

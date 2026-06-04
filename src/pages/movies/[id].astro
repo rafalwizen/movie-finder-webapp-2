@@ -20,7 +20,7 @@ if (!movie) {
   return Astro.redirect('/');
 }
 
-const title = `${movie.title} — Movie Finder`;
+const title = `${movie.title} — GdzieDoKina.pl`;
 const initial = movie.title.charAt(0).toUpperCase();
 ---
 
@@ -63,14 +63,14 @@ const initial = movie.title.charAt(0).toUpperCase();
           <line x1="19" y1="12" x2="5" y2="12" />
           <polyline points="12 19 5 12 12 5" />
         </svg>
-        Back to movies
+        Wróć do filmów
       </a>
     </div>
   </section>
 
   <!-- Screenings -->
   <section>
-    <h2 class="mb-4 text-2xl font-bold text-gray-900">Upcoming Screenings</h2>
+    <h2 class="mb-4 text-2xl font-bold text-gray-900">Nadchodzące seanse</h2>
     {screenings.length > 0 && <ScreeningFilters screenings={screenings} />}
     <div class="mt-4">
       <ScreeningList screenings={screenings} />
