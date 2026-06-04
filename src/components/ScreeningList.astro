@@ -11,14 +11,14 @@ const { screenings } = Astro.props;
 ---
 
 {screenings.length === 0 ? (
-  <EmptyState message="No upcoming screenings for this movie" />
+  <EmptyState message="Brak nadchodzących seansów dla tego filmu" />
 ) : (
   <div class="space-y-3" data-screening-list>
     {screenings.map((screening) => (
       <ScreeningCard screening={screening} />
     ))}
     <p data-no-results class="hidden text-center text-gray-400 py-8">
-      No screenings match your filters
+      Żaden seans nie pasuje do wybranych filtrów
     </p>
   </div>
 )}
