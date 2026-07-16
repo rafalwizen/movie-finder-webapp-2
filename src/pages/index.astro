@@ -2,16 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SearchBar from '../components/SearchBar.astro';
 import MovieGrid from '../components/MovieGrid.astro';
-import { fetchMovies } from '../lib/api';
+import ApiConfigError from '../components/ApiConfigError.astro';
+import { fetchMovies, isApiConfigured } from '../lib/api';
 
 const query = Astro.url.searchParams.get('q') ?? '';
+const configured = isApiConfigured();
 let error = false;
 let movies = [];
 
-try {
-  movies = await fetchMovies(query || undefined);
-} catch {
-  error = true;
+if (configured) {
+  try {
+    movies = await fetchMovies(query || undefined);
+  } catch {
+    error = true;
+  }
 }
 ---
 
@@ -26,7 +30,9 @@ try {
   </section>
 
   <section>
-    {error ? (
+    {!configured ? (
+      <ApiConfigError />
+    ) : error ? (
       <div class="rounded-lg border border-red-200 bg-red-50 p-6 text-center text-red-700">
         <p class="text-lg font-semibold">Nie udało się załadować filmów</p>
         <p class="mt-1 text-sm">Upewnij się, że serwer API działa i spróbuj ponownie.</p>

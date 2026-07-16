@@ -1,8 +1,17 @@
 import type { Movie, Screening } from '../types';
 
+const RAW_API_BASE_URL = (import.meta.env.API_BASE_URL ?? '').trim();
+
+/**
+ * Whether the API base URL is configured via the API_BASE_URL environment variable.
+ * Pages use this to render a configuration notice instead of silently failing.
+ */
+export function isApiConfigured(): boolean {
+  return RAW_API_BASE_URL.length > 0;
+}
+
 function getBaseUrl(): string {
-  const url = import.meta.env.API_BASE_URL || 'http://localhost:8080';
-  return url.replace(/\/+$/, '');
+  return RAW_API_BASE_URL.replace(/\/+$/, '');
 }
 
 export async function fetchMovies(q?: string): Promise<Movie[]> {

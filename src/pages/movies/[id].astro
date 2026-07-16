@@ -2,7 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ScreeningFilters from '../../components/ScreeningFilters.astro';
 import ScreeningList from '../../components/ScreeningList.astro';
-import { fetchMovieById, fetchScreenings } from '../../lib/api';
+import ApiConfigError from '../../components/ApiConfigError.astro';
+import { fetchMovieById, fetchScreenings, isApiConfigured } from '../../lib/api';
 
 const idParam = Astro.params.id;
 const id = Number(idParam);
@@ -11,20 +12,30 @@ if (!idParam || isNaN(id)) {
   return Astro.redirect('/');
 }
 
-const [movie, screenings] = await Promise.all([
-  fetchMovieById(id),
-  fetchScreenings(id),
-]);
+const configured = isApiConfigured();
+let movie = null;
+let screenings = [];
 
-if (!movie) {
+if (configured) {
+  [movie, screenings] = await Promise.all([
+    fetchMovieById(id),
+    fetchScreenings(id),
+  ]);
+}
+
+// Only redirect when the API is configured but the movie genuinely wasn't found.
+// When the API is not configured, show the config notice instead of redirecting.
+if (configured && !movie) {
   return Astro.redirect('/');
 }
 
-const title = `${movie.title} — GdzieDoKina.pl`;
-const initial = movie.title.charAt(0).toUpperCase();
+const title = configured ? `${movie.title} — GdzieDoKina.pl` : 'GdzieDoKina.pl';
+const initial = configured ? movie.title.charAt(0).toUpperCase() : '';
 ---
 
 <BaseLayout title={title}>
+  {configured ? (
+    <>
   <!-- Movie header -->
   <section class="mb-8 flex flex-col gap-6 md:flex-row">
     <div class="flex-shrink-0">
@@ -76,6 +87,10 @@ const initial = movie.title.charAt(0).toUpperCase();
       <ScreeningList screenings={screenings} />
     </div>
   </section>
+    </>
+  ) : (
+    <ApiConfigError />
+  )}
 </BaseLayout>
 
 <script>
