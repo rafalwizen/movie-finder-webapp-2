@@ -20,7 +20,7 @@ Lightweight frontend for browsing movies and cinema screenings. Built with Astro
 ## Prerequisites
 
 - Node.js 18+
-- Backend API running (default: `http://localhost:8080`)
+- Backend API running (set its URL via `API_BASE_URL`, see `.env.example`)
 
 ## Getting Started
 
@@ -36,11 +36,25 @@ The app runs at `http://localhost:4321`.
 
 ## Configuration
 
-Create a `.env` file in the project root (one is provided by default):
+The app reads the backend API base URL from the `API_BASE_URL` environment
+variable. Copy `.env.example` to `.env` and adjust as needed:
 
 ```env
 API_BASE_URL=http://localhost:8080
 ```
+
+> If `API_BASE_URL` is unset, the app shows a "Serwis tymczasowo niedostępny"
+> notice instead of rendering content.
+
+## Deployment (Vercel)
+
+This project ships with the `@astrojs/vercel` adapter, so no extra build
+configuration is needed. On Vercel the `.env` file is **not** read (it's
+gitignored), so set the variable in the dashboard:
+
+1. Project **Settings → Environment Variables**
+2. Add `API_BASE_URL` = `http://localhost:8080`
+3. Trigger a redeploy
 
 ## Scripts
 
