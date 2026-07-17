@@ -1,5 +1,6 @@
 ---
 import type { Screening } from '../types';
+import { PROVIDERS } from '../types';
 
 interface Props {
   screenings: Screening[];
@@ -9,6 +10,11 @@ const { screenings } = Astro.props;
 
 // Extract unique non-null cities, sorted alphabetically
 const cities = [...new Set(screenings.map((s) => s.cinemaCity).filter(Boolean))].sort() as string[];
+
+// Extract unique provider codes present in the screenings, sorted by display name
+const providers = [...new Set(screenings.map((s) => s.providerCode).filter(Boolean))]
+  .map((code) => ({ code, name: PROVIDERS[code]?.name ?? code }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <div class="flex flex-wrap items-center gap-4" data-filters>
@@ -22,6 +28,20 @@ const cities = [...new Set(screenings.map((s) => s.cinemaCity).filter(Boolean))]
       <option value="">Wszystkie miasta</option>
       {cities.map((city) => (
         <option value={city}>{city}</option>
+      ))}
+    </select>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <label for="filter-provider" class="text-sm font-medium text-gray-700">Sieć kin:</label>
+    <select
+      id="filter-provider"
+      data-filter-provider
+      class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+    >
+      <option value="">Wszystkie sieci</option>
+      {providers.map((provider) => (
+        <option value={provider.code}>{provider.name}</option>
       ))}
     </select>
   </div>
