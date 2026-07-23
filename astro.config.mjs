@@ -5,8 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   output: 'server',
-  // Enable privacy-friendly Vercel Web Analytics (no cookies, GDPR-compliant).
-  adapter: vercel({ webAnalytics: { enabled: true } }),
+  adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],
   },
